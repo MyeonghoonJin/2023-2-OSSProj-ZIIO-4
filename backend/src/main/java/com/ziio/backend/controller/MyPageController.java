@@ -35,20 +35,33 @@ public class MyPageController {
         List<MyPage> myPages = myPageService.getAllMyPagesByUserEmail(userEmail);
 
         // 응답 객체 생성 및 반환
-        List<MyPageDTO.GetResponse> response = new ArrayList<>();
-        for (MyPage mypage : myPages) {
-            MyPageDTO.GetResponse res = MyPageDTO.GetResponse.builder()
-                    .my_page_id(mypage.getMy_page_id())
-                    .start_date(mypage.getStart_date())
-                    .end_date(mypage.getEnd_date())
-                    .title(mypage.getTitle())
-                    .url(mypage.getUrl())
-                    .color_code(mypage.getColor_code())
-                    .memo(mypage.getMemo())
-                    .build();
+//        List<MyPageDTO.GetResponse> response = new ArrayList<>();
+//        for (MyPage mypage : myPages) {
+//            MyPageDTO.GetResponse res = MyPageDTO.GetResponse.builder()
+//                    .my_page_id(mypage.getMy_page_id())
+//                    .start_date(mypage.getStart_date())
+//                    .end_date(mypage.getEnd_date())
+//                    .title(mypage.getTitle())
+//                    .url(mypage.getUrl())
+//                    .color_code(mypage.getColor_code())
+//                    .memo(mypage.getMemo())
+//                    .build();
+//
+//            response.add(res);
+//        }
+        //for 루프 -> streamAPI 사용으로 수정
+        List<MyPageDTO.GetResponse> response = myPages.stream()
+                .map(mypage -> MyPageDTO.GetResponse.builder()
+                        .my_page_id(mypage.getMy_page_id())
+                        .start_date(mypage.getStart_date())
+                        .end_date(mypage.getEnd_date())
+                        .title(mypage.getTitle())
+                        .url(mypage.getUrl())
+                        .color_code(mypage.getColor_code())
+                        .memo(mypage.getMemo())
+                        .build())
+                .collect(Collectors.toList());
 
-            response.add(res);
-        }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
