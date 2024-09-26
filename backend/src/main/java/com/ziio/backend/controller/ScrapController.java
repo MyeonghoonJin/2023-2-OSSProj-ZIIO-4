@@ -86,13 +86,20 @@ public class ScrapController {
         // 스크랩 목록
         List<Long> userScrapIds = myPageService.getScrapIdsByUserEmail(userEmail);
 
-        // 응답 객체 생성 및 반환
-        List<Map<String, Long>> response = new ArrayList<>();
-        for (int i = 0; i < userScrapIds.size(); i++) {
+//        // 응답 객체 생성 및 반환
+//        List<Map<String, Long>> response = new ArrayList<>();
+//        for (int i = 0; i < userScrapIds.size(); i++) {
+//            Map<String, Long> map = new HashMap<>();
+//            map.put("id", userScrapIds.get(i));
+//            response.add(map);
+//        }
+        // 수정된 코드 (for-each문을 사용한 리스트 순회)
+        for (Long scrapId : userScrapIds) {
             Map<String, Long> map = new HashMap<>();
-            map.put("id", userScrapIds.get(i));
+            map.put("id", scrapId);
             response.add(map);
         }
+
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
